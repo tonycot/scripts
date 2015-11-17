@@ -1,5 +1,16 @@
 #!/bin/bash
+#
+# Put this script near by of your local repository folders.
+# The common strategy of this script is to find repository via .git folder and after activate the checks of puppet code  and ruby.
+#
+
+# Exit code defenition
 excode=0
+
+# Functions
+
+# Puppet validation function 
+# You can modify the function to change the validation activity
 
 function ppvd {
   cd $1
@@ -12,6 +23,9 @@ function ppvd {
   cd - 
 }
 
+# Ruby validation function 
+# You can modify the function to change the validation activity
+
 function rbvd {
   cd $1
   echo -e "\n======== Start ruby syntax test in $1 ========\n"  
@@ -23,7 +37,8 @@ function rbvd {
   cd - 
 }
 
-# My Puppet repository
+# Main functionality
+ 
 for diro in $(find . -name '.git' | grep -oP '.*(?=/)' | sort -u )
   do 
     echo -e "\n======== My Puppet repository is $diro  ========\n"      
