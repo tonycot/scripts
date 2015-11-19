@@ -15,11 +15,11 @@ excode=0
 function ppvd {
   cd $1
   echo -e "\n=== Start puppet syntax test in $1 ===\n"
-    find . -iname '*.pp' |  xargs puppet parser validate --render-as yaml
-    if [[ $? -ne "0" ]] 
-      then         
-        excode=1
-    fi  
+  find . -iname '*.pp' |  xargs puppet parser validate
+  if [[ $? -ne "0" ]] 
+    then         
+      excode=1
+  fi  
   cd - 
 }
 
@@ -29,11 +29,11 @@ function ppvd {
 function rbvd {
   cd $1
   echo -e "\n=== Start ruby syntax test in $1 ===\n"  
-    find . -iname '*.erb' | erb -x -T '-' | ruby -c
-      if [[ $? -ne "0" ]]
-        then
-          excode=1
-      fi
+  find . -iname '*.erb' | erb -x -T '-' | ruby -c
+    if [[ $? -ne "0" ]]
+      then
+        excode=1
+    fi
   cd - 
 }
 
@@ -42,11 +42,15 @@ function rbvd {
 function plvd {
   cd $1
   echo -e "\n=== Start puppet-lint syntax test in $1 ===\n"
-    find . -iname '*.pp' |  xargs puppet-lint
-    if [[ $? -ne "0" ]]
-      then
-        excode=1; echo $excode
-    fi
+  fs=$(find . -iname '*.pp')
+  if [[ -n $fs ]]
+    then
+      echo $fs | xargs puppet-lint --error-level error
+      if [[ $? -ne "0" ]]
+        then
+          excode=1  
+      fi
+  fi
   cd -
 }
 
@@ -56,8 +60,8 @@ for diro in $(find . -name '.git' | grep -oP '.*(?=/)' | sort -u )
   do 
     echo -e "\n======== Current Puppet repository is $diro  ========\n"      
     ppvd $diro
-#    rbvd $diro
-#    plvd $diro
+    rbvd $diro
+    plvd $diro
   done
 
 exit $excode
