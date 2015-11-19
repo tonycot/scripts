@@ -14,8 +14,8 @@ excode=0
 
 function ppvd {
   cd $1
-  echo -e "\n======== Start puppet syntax test in $1 ========\n"
-    find . -iname '*.pp' |  xargs puppet parser validate
+  echo -e "\n=== Start puppet syntax test in $1 ===\n"
+    find . -iname '*.pp' |  xargs puppet parser validate --render-as yaml
     if [[ $? -ne "0" ]] 
       then         
         excode=1
@@ -28,7 +28,7 @@ function ppvd {
 
 function rbvd {
   cd $1
-  echo -e "\n======== Start ruby syntax test in $1 ========\n"  
+  echo -e "\n=== Start ruby syntax test in $1 ===\n"  
     find . -iname '*.erb' | erb -x -T '-' | ruby -c
       if [[ $? -ne "0" ]]
         then
@@ -37,13 +37,27 @@ function rbvd {
   cd - 
 }
 
+# Puppet-lint validation function
+# You can modify the function to change the validation activity
+function plvd {
+  cd $1
+  echo -e "\n=== Start puppet-lint syntax test in $1 ===\n"
+    find . -iname '*.pp' |  xargs puppet-lint
+    if [[ $? -ne "0" ]]
+      then
+        excode=1; echo $excode
+    fi
+  cd -
+}
+
 # Main functionality
  
 for diro in $(find . -name '.git' | grep -oP '.*(?=/)' | sort -u )
   do 
-    echo -e "\n======== My Puppet repository is $diro  ========\n"      
+    echo -e "\n======== Current Puppet repository is $diro  ========\n"      
     ppvd $diro
-    rbvd $diro
+#    rbvd $diro
+#    plvd $diro
   done
 
 exit $excode
