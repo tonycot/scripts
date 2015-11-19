@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+# version alfa 0.1
 # Put this script near by of your local repository folders.
 # The common strategy of this script is to find repository via .git folder and after activate the checks of puppet code  and ruby.
 #
