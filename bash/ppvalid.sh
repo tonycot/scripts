@@ -31,10 +31,10 @@ function rbvd {
   cd $1
   echo -e "\n=== Start ruby syntax test in $1 ===\n"  
   find . -iname '*.erb' | erb -x -T '-' | ruby -c
-    if [[ $? -ne "0" ]]
-      then
-        excode=1
-    fi
+  if [[ $? -ne "0" ]]
+    then
+      excode=1
+  fi
   cd - 
 }
 
@@ -47,10 +47,6 @@ function plvd {
   if [[ -n $fs ]]
     then
       echo $fs | xargs puppet-lint --error-level error
-      if [[ $? -ne "0" ]]
-        then
-          excode=1  
-      fi
   fi
   cd -
 }
