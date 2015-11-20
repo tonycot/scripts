@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# version alfa 0.1
+# version alfa 0.2
 # Put this script near by of your local repository folders.
 # The common strategy of this script is to find repository via .git folder and after activate the checks of puppet code  and ruby.
 #
@@ -16,7 +16,8 @@ excode=0
 function ppvd {
   cd $1
   echo -e "\n=== Start puppet syntax test in $1 ===\n"
-  find . -iname '*.pp' |  xargs puppet parser validate
+  ignor="zabbix/manifests/profiles/agent.pp"
+  find . -iname '*.pp' |  grep -v $ignor | xargs puppet parser validate
   if [[ $? -ne "0" ]] 
     then         
       excode=1
@@ -61,4 +62,11 @@ for diro in $(find . -name '.git' | grep -oP '.*(?=/)' | sort -u )
     plvd $diro
   done
 
+# Exit code defenition
+if [[ $excode -eq "1" ]]
+  then
+    echo "TRACE: Crash with ERROR"
+  else
+    echo "Validation is Successful"
+fi
 exit $excode
