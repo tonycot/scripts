@@ -10,7 +10,7 @@ excode=0
 
 # Functions
 
-# Puppet validation function 
+# Puppet validation function
 # You can modify the function to change the validation activity
 
 function ppvd {
@@ -18,25 +18,25 @@ function ppvd {
   echo -e "\n=== Start puppet syntax test in $1 ===\n"
   ignor="zabbix/manifests/profiles/agent.pp"
   find . -iname '*.pp' |  grep -v $ignor | xargs puppet parser validate
-  if [[ $? -ne "0" ]] 
-    then         
+  if [[ $? -ne "0" ]]
+    then
       excode=1
-  fi  
-  cd - 
+  fi
+  cd -
 }
 
-# Ruby validation function 
+# Ruby validation function
 # You can modify the function to change the validation activity
 
 function rbvd {
   cd $1
-  echo -e "\n=== Start ruby syntax test in $1 ===\n"  
+  echo -e "\n=== Start ruby syntax test in $1 ===\n"
   find . -iname '*.erb' | erb -x -T '-' | ruby -c
   if [[ $? -ne "0" ]]
     then
       excode=1
   fi
-  cd - 
+  cd -
 }
 
 # Puppet-lint validation function
@@ -55,8 +55,8 @@ function plvd {
 # Main functionality
  
 for diro in $(find . -name '.git' | grep -oP '.*(?=/)' | sort -u )
-  do 
-    echo -e "\n======== Current Puppet repository is $diro  ========\n"      
+  do
+    echo -e "\n======== Current Puppet repository is $diro  ========\n"
     ppvd $diro
     rbvd $diro
     plvd $diro
