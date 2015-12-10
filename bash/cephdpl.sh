@@ -4,7 +4,9 @@
 hnm = "localhost"
 osdir = "/var/local/osd"
 diro = "/root/mycepho"
-mkdir -p $diro
+
+mkdir -p $diro && cd $diro
+
 ceph-deploy new $hnm
 
 echo "osd_pool_default_size = 2" >> $diro/ceph.conf
