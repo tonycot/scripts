@@ -27,7 +27,7 @@ echos ...preparing
 count 2
 
 #Out OSD
-echos is going out
+echos ...outing
 ceph osd out osd.$nu
 count 2
 
@@ -37,12 +37,12 @@ service ceph stop osd.$nu
 count 4
 
 # Crush rm OSD
-echos ...remooving from CRUSH
+echos ...removing_from_CRUSH
 ceph osd crush remove osd.$nu
 count 4
 
 # Auth delete OSD
-echos ...deleting auth
+echos ...deleting_auth
 ceph auth del osd.$nu
 count 4
 
