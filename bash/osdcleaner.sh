@@ -2,10 +2,10 @@
 #
 #
 
-# Functions 
+# Functions
 function count {
   for i in `seq 1 $1`
-    do 
+    do
       sleep $1 && echo "."
     done
 }
