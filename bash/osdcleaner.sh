@@ -20,7 +20,7 @@ read  -p "Welcome! Please enter the OSD number like osd." nu
 
 if ! [[ $nu =~ ^[0-9]+$ ]]
   then
-    echo "Try again" && break
+    echo "Try again" && exit
 fi
 
 echos ...preparing
