@@ -18,6 +18,11 @@ function echos {
 # The main functionality
 read  -p "Welcome! Please enter the OSD number like osd." nu
 
+if ! [[ $nu =~ ^[0-9]+$ ]]
+  then
+    echo "Try again" && break
+fi
+
 echos ...preparing
 count 2
 
