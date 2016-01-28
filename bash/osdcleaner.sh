@@ -1,30 +1,54 @@
 #!/bin/bash
 #
 #
-echo "\n Welcome to OSD auto removing tool \n "
-read  -p "Please enter the OSD number like \"osd.1\" : " osd 
-echo "\n Your OSD is  $osd , starting... \n"
+
+# Functions
+function count {
+  for i in `seq 1 $1`
+    do
+      sleep $1 && echo "."
+    done
+}
+
+function echos {
+  echo -e " \n OSD.$nu $1 "
+}
+
+
+# The main functionality
+read  -p "Welcome! Please enter the OSD number like osd." nu
+
+if ! [[ $nu =~ ^[0-9]+$ ]]
+  then
+    echo "Try again" && exit
+fi
+
+echos ...preparing
+count 2
 
 #Out OSD
-echo -e " \n $osd is going out \n"
-sleep 5
+echos ...outing
+ceph osd out osd.$nu
+count 2
+
 # stop OSD
-service ceph stop $osd
-sleep 5
+echos ...stopping
+service ceph stop osd.$nu
+count 4
 
 # Crush rm OSD
-echo -e " \n The $osd is going out from CRUSH \n "
-ceph osd crush remove $osd
-sleep 5
+echos ...removing_from_CRUSH
+ceph osd crush remove osd.$nu
+count 4
 
 # Auth delete OSD
-echo -e " \n The Auth of $osd is going to be deleted \n "
-ceph auth del $osd
-sleep 5 
+echos ...deleting_auth
+ceph auth del osd.$nu
+count 4
 
 # Rm OSD
-echo -e " \n Deleting $osd \n"
-ceph osd rm $osd
-sleep 5
+echos ...removing
+ceph osd rm osd.$nu
+count 1
 
-echo "Done"
+echos ...done
