@@ -23,3 +23,16 @@ apt-get update
 echos ...installing salt
 install salt-master salt-minion salt-ssh salt-cloud salt-doc
 echos ...done
+
+# Master Configuration
+
+mkdir -p /srv/{salt,pillar}
+
+echo 'file_roots:
+  base:
+    - /srv/salt
+    - /srv/formulas
+pillar_roots:
+  base:
+    - /srv/pillar
+'>> /etc/salt/master
